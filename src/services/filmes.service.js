@@ -4,17 +4,17 @@ function ServiceCreateMovie(body) {
     const { NameMovie, MovieId } = body
     if (!NameMovie || !MovieId) {
         console.log('body is not defined')
-        return ['falta credências', false]
+        return ['lack of credentials', false]
     }
     else {
         if (!MovieExists(MovieId, NameMovie)) {
             if (NameMovie, MovieId) {
                 db.push(body)
-                return ['Filme criado com sucesso', true]
+                return ['Movie created successfully ', true]
             }
         }
         else {
-            return ['Esse filme já foi criado', false]
+            return ['This movie already exists ', false]
         }
     }
 }
