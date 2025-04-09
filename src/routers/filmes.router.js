@@ -1,8 +1,9 @@
 import { Router } from "express";
-import { CreateMovie,ListMovies } from "../controllers/filmes.controller.js";
+import { CreateMovie,ListMovies,DeleteMovie } from "../controllers/filmes.controller.js";
 const MovieRouter = Router();
 
-MovieRouter.post('/CreateMovie',CreateMovie)
+MovieRouter.post('/Movies',CreateMovie)
 MovieRouter.get('/Movies',ListMovies)
+MovieRouter.delete('/Movies',DeleteMovie)
 
 export default MovieRouter

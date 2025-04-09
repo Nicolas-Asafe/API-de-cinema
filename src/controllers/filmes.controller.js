@@ -1,17 +1,23 @@
-import { ServiceCreateMovie,ServiceListMovies } from "../services/filmes.service.js";
+import { ServiceCreateMovie,ServiceDeleteMovie,ServiceListMovies } from "../services/filmes.service.js";
 
 async function CreateMovie(req,res){
-    const body = req.body;
-    const [a,b] =ServiceCreateMovie(body)
-    if(b){
-        res.json({message:"Movie created with sucess"})
-    }
-    else{
-        res.status(404).json({message:a})
-    }
+    const [motive,result] = ServiceCreateMovie(req.body)
+
+    result
+    ?res.json({message:motive})
+    :res.status(404).json({message:motive})
+
 }
 async function ListMovies(req,res){
-    res.json({movies:ServiceListMovies(),message:"Movies listed with sucess"})
+    const [db,motive] = ServiceListMovies()
+    res.json({movies:db,message:motive})
 }
 
-export {CreateMovie,ListMovies}
+async function DeleteMovie(req,res){
+    const [motive,result] = ServiceDeleteMovie(req.body)
+    result
+    ?res.json({message:motive})
+    :res.status(404).json({message:motive})
+}
+
+export {CreateMovie,ListMovies,DeleteMovie}

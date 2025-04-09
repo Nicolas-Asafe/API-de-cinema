@@ -1,1 +1,3 @@
-export default []
+let db = []
+
+export default db
