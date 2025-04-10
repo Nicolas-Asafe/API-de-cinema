@@ -1,4 +1,7 @@
-import { ServiceCreateMovie,ServiceDeleteMovie,ServiceListMovies } from "../services/filmes.service.js";
+import { ServiceCreateMovie,ServiceDeleteMovie,ServiceListMovies } from "../services/movies.service.js";
+
+
+//Controllers das rotas CAMADA 2
 
 async function CreateMovie(req,res){
     const [motive,result] = ServiceCreateMovie(req.body)
@@ -19,5 +22,6 @@ async function DeleteMovie(req,res){
     ?res.json({message:motive})
     :res.status(404).json({message:motive})
 }
+
 
 export {CreateMovie,ListMovies,DeleteMovie}
