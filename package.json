@@ -4,7 +4,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "dev":"node --watch src/server.js"
+    "dev":"node --watch src/app.js"
   },
   "keywords": [],
   "author": "",

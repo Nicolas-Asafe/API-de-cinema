@@ -1,21 +1,20 @@
 import db from "../db.js";
-import { VerifyIfUserExists } from "./users.service.js";
-import { VerfifyBody,validateBuyTicket } from "../../utils/conditialsTool.js";
+import { VerifyBody,validateBuyTicket } from "../../utils/conditialsTool.js";
 //Funções que vão mexer na raiz do banco de dados CAMADA 1
 
 function ServiceCreateMovie(body) {
     const { NameMovie, MovieId, Gender } = body
 
-    let verify = VerfifyBody({ body, type: 'movieforcreate' })
+    let verify = VerifyBody({ body, type: 'movieforcreate' })
     if (!verify[1]) return verify
-    verify = VerfifyBody({ body, type: 'movieExists' })
+    verify = VerifyBody({ body, type: 'movieExists' })
     if (!verify[1]) return verify
     
     db.filmesNoCatagolo.push({
         NameMovie,
         MovieId,
         Gender,
-        tickets: 50,
+        tickets: 1,
         peopleWhoAreGoingToWatchTheMovie: []
     })
     return ['Movie created successfully', true]
@@ -37,11 +36,11 @@ function ServiceBuyTicket(body) {
 
 
 function ServiceDeleteMovie(body) {
-    const { MovieId, MovieName } = body;
+    const { MovieId } = body;
 
-    let verify = VerfifyBody({ body, type: 'movieCredentials' })
+    let verify = VerifyBody({ body, type: 'movieCredentials' })
     if (!verify[1]) return verify
-    verify = VerfifyBody({ body, type: 'movieNotExists' })
+    verify = VerifyBody({ body, type: 'movieNotExists' })
     if (!verify[1]) return verify
     
 
@@ -57,4 +56,4 @@ function ServiceListMovies() {
     return [db.filmesNoCatagolo, 'Movies listed with sucess']
 }
 
-export { ServiceCreateMovie, ServiceListMovies, ServiceDeleteMovie }
+export { ServiceCreateMovie, ServiceListMovies, ServiceDeleteMovie,ServiceBuyTicket }

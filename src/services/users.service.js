@@ -1,16 +1,16 @@
 // Essas funções vão manusear os usuários
-
-import { VerfifyBody } from "../../utils/conditialsTool.js";
+import { VerifyBody } from "../../utils/conditialsTool.js";
 import db from "../db.js";
+
 const users = db.users;
 let countUsers = 0
 
 function ServiceCreateUser(body){
-    const verify = VerfifyBody({body,type:'userforcreate'})
+    const verify = VerifyBody({body,type:'userforcreate'})
     if(!verify[1]) return [verify[0],verify[1]]
 
     countUsers++
-    users.push({Name:body.Name,ID:countUsers})
+    users.push({Name:body.Name,ID:countUsers,Itens:[]})
     return ['User created with sucess',true]
 }
 
@@ -19,9 +19,9 @@ function ServiceGetUsers(){
 }
 
 function ServiceDeleteUser(body){
-    let verify = VerfifyBody({body,type:'userforcreate'})
+    let verify = VerifyBody({body,type:'userforcreate'})
     if(!verify[1]) return [verify[0],verify[1]]
-    verify = VerfifyBody({body,type:'userExists'})
+    verify = VerifyBody({body,type:'userExists'})
     if(!verify[1]) return [verify[0],verify[1]]
     
     users.splice(users.findIndex(u=>u.Name === body.Name),1)
@@ -35,12 +35,6 @@ function VerifyIfUserExists(NameUser,ID){
     : ['Usuário não encontrado',false]
 }
 
-function ServiceSelectUser(body){
-    const verify = VerfifyBody({body,type:'userExists'})
-    if(!verify[1]) return [verify[0],verify[1]]
-    else{
-        return ['User selected with sucess',true,verify[2]]
-    }
-}
 
-export {ServiceCreateUser,ServiceGetUsers,ServiceDeleteUser,VerifyIfUserExists,ServiceSelectUser}
+
+export {ServiceCreateUser,ServiceGetUsers,ServiceDeleteUser,VerifyIfUserExists}

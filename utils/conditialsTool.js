@@ -1,9 +1,18 @@
 import { ServiceListMovies } from "../src/services/movies.service.js"
 import { VerifyIfUserExists } from "../src/services/users.service.js"
-
-function VerfifyBody({ body, type = 'movieforcreate' }) {
+import { ServiceGetComboById } from "../src/services/combos.service.js"
+const validatorString = {
+    movieforcreate: validateMovieForCreate,
+    movieExists: validateMovieExists,
+    movieNotExists: validateMovieNotExists,
+    movieCredentials: validateMovieCredentials,
+    userforcreate: validateUserForCreate,
+    userExists: validateUserExists,
+    comboExists:validateComboExists,
+    userCredentials:validateUserCredentials
+}
+function VerifyBody({ body, type = 'movieforcreate' }) {
     if (!body) return ['lack of credentials', false]
-
     const validators = {
         movieforcreate: validateMovieForCreate,
         movieExists: validateMovieExists,
@@ -11,8 +20,9 @@ function VerfifyBody({ body, type = 'movieforcreate' }) {
         movieCredentials: validateMovieCredentials,
         userforcreate: validateUserForCreate,
         userExists: validateUserExists,
+        comboExists:validateComboExists,
+        userCredentials:validateUserCredentials
     }
-
     const validate = validators[type]
 
     if (!validate) return ['invalid type', false]
@@ -36,7 +46,6 @@ function validateMovieNotExists(body) {
     const result = MovieExists(body.MovieId, body.MovieName)
     return result[1] ? ['ok', true] : ['This movie not exists', false]
 }
-
 function validateMovieCredentials(body) {
     const { MovieId, MovieName } = body
     if (!MovieId || !MovieName) {
@@ -69,7 +78,6 @@ function validateBuyTicket(body) {
     return ['ok', true, { movie, user: User }]
 }
 
-
 function validateUserForCreate(body) {
     const { Name } = body
     if (!Name) {
@@ -77,21 +85,32 @@ function validateUserForCreate(body) {
     }
     return ['ok', true]
 }
-
+function validateUserCredentials(body){
+    const { NameUser, ID } = body
+    return !NameUser || !ID
+    ?['lack of credentials', false]
+    :['credentials correct',true]
+}
 function validateUserExists(body) {
     const { NameUser, ID } = body
     const result = VerifyIfUserExists(NameUser, ID)
+    
     return result[1] ? ['ok', true] : ['The user not exists', false, result[2]]
 }
-
-
 function MovieExists(MovieId, MovieName) {
     const MovieExists = ServiceListMovies()[0].find(m => m.MovieId === MovieId || m.NameMovie === MovieName)
     return MovieExists
         ? ['Filme encontrado', true, MovieExists]
         : ['Filme não encontrado', false]
 }
+function validateComboExists(body){
+    const {IDcombo} = body
+    console.log(ServiceGetComboById(IDcombo))
+    return ServiceGetComboById(IDcombo)
+    ? ['Combo exists', true]
+    : ['Combo not exists', false]
+}
 
 
 
-export { VerfifyBody,validateBuyTicket }
+export { VerifyBody,validateBuyTicket,validatorString }
