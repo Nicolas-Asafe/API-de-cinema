@@ -22,7 +22,7 @@ function ServiceCreateMovie(body) {
 
 
 function ServiceBuyTicket(body) {
-    const [msg, isValid, data] = VerifyBody({body,type:validatorString.buyTicketCredentials})
+    const [msg, isValid, data] = VerifyBody({body,type:validatorString.buyTicketCredentials()})
     if (!isValid) return [msg, false]
 
     const movie = data.movie

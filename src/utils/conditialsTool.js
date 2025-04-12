@@ -39,7 +39,6 @@ function validateMovieForCreate(body) {
     }
     return ['ok', true]
 }
-
 function validateMovieExists(body) {
     const result = MovieExists(body.MovieId, body.MovieName)
     return result[1] ? ['This movie already exists', false] : ['ok', true]
@@ -58,21 +57,27 @@ function validateMovieCredentials(body) {
 }
 function validateBuyTicket(body) {
     const { NameMovie, MovieId, User } = body
+
     if (!NameMovie || !MovieId || !User || !User.Name) {
         return ['lack of credentials', false]
     }
+
+
     const movieResult = MovieExists(MovieId, NameMovie)
     if (!movieResult[1]) {
         return ['The movie not exists', false]
     }
+
     const userResult = VerifyIfUserExists(User.Name)
     if (!userResult[1]) {
         return ['The user not exists', false]
     }
+
     const movie = movieResult[2]
     if (movie.tickets <= 0) {
         return ['tickets sold out', false]
     }
+
     return ['ok', true, { movie, user: User }]
 }
 
