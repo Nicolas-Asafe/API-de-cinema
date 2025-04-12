@@ -1,5 +1,5 @@
 // Essas funções vão manusear os usuários
-import { VerifyBody } from "../../utils/conditialsTool.js";
+import { VerifyBody } from "../utils/conditialsTool.js";
 import db from "../db.js";
 
 const users = db.users;

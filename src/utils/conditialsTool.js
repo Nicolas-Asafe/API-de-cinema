@@ -1,16 +1,18 @@
-import { ServiceListMovies } from "../src/services/movies.service.js"
-import { VerifyIfUserExists } from "../src/services/users.service.js"
-import { ServiceGetComboById } from "../src/services/combos.service.js"
+import { ServiceListMovies } from "../services/movies.service.js"
+import { VerifyIfUserExists } from "../services/users.service.js"
+import { ServiceGetComboById } from "../services/combos.service.js"
 const validatorString = {
-    movieforcreate: validateMovieForCreate,
-    movieExists: validateMovieExists,
-    movieNotExists: validateMovieNotExists,
-    movieCredentials: validateMovieCredentials,
-    userforcreate: validateUserForCreate,
-    userExists: validateUserExists,
-    comboExists:validateComboExists,
-    userCredentials:validateUserCredentials
+    movieforcreate: ()=>{return'movieforcreate'},
+    movieExists:()=>{return 'movieExists'},
+    movieNotExists:()=>{return "movieNotExists"},
+    movieCredentials:()=>{return "movieCredentials"},
+    userforcreate: ()=>{return"userforcreate"},
+    userExists: ()=>{return"userExists"},
+    comboExists:()=>{return"comboExists"},
+    userCredentials:()=>{return"userCredentials"},
+    buyTicketCredentials:()=>{return"buyTicketCredentials"}
 }
+
 function VerifyBody({ body, type = 'movieforcreate' }) {
     if (!body) return ['lack of credentials', false]
     const validators = {
@@ -21,7 +23,8 @@ function VerifyBody({ body, type = 'movieforcreate' }) {
         userforcreate: validateUserForCreate,
         userExists: validateUserExists,
         comboExists:validateComboExists,
-        userCredentials:validateUserCredentials
+        userCredentials:validateUserCredentials,
+        buyTicketCredentials:validateBuyTicket
     }
     const validate = validators[type]
 
@@ -55,26 +58,21 @@ function validateMovieCredentials(body) {
 }
 function validateBuyTicket(body) {
     const { NameMovie, MovieId, User } = body
-
     if (!NameMovie || !MovieId || !User || !User.Name) {
         return ['lack of credentials', false]
     }
-
     const movieResult = MovieExists(MovieId, NameMovie)
     if (!movieResult[1]) {
         return ['The movie not exists', false]
     }
-
     const userResult = VerifyIfUserExists(User.Name)
     if (!userResult[1]) {
         return ['The user not exists', false]
     }
-
     const movie = movieResult[2]
     if (movie.tickets <= 0) {
         return ['tickets sold out', false]
     }
-
     return ['ok', true, { movie, user: User }]
 }
 
@@ -113,4 +111,4 @@ function validateComboExists(body){
 
 
 
-export { VerifyBody,validateBuyTicket,validatorString }
+export { VerifyBody,validatorString }

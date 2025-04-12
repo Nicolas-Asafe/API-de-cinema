@@ -1,5 +1,5 @@
 import db from "../db.js";
-import { VerifyBody,validateBuyTicket } from "../../utils/conditialsTool.js";
+import { VerifyBody,validatorString } from "../utils/conditialsTool.js";
 //Funções que vão mexer na raiz do banco de dados CAMADA 1
 
 function ServiceCreateMovie(body) {
@@ -22,7 +22,7 @@ function ServiceCreateMovie(body) {
 
 
 function ServiceBuyTicket(body) {
-    const [msg, isValid, data] = validateBuyTicket(body)
+    const [msg, isValid, data] = VerifyBody({body,type:validatorString.buyTicketCredentials})
     if (!isValid) return [msg, false]
 
     const movie = data.movie

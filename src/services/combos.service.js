@@ -1,5 +1,5 @@
 import db from "../db.js";
-import { VerifyBody } from "../../utils/conditialsTool.js";
+import { VerifyBody  } from "../utils/conditialsTool.js";
 import { VerifyIfUserExists } from "./users.service.js";
 // Essas funções vão manusear os combos tanto de pipoca e etc
 
@@ -9,7 +9,6 @@ function ServiceListCombos(){
     return ['Combos listed with sucess',true,db.Combos]
 }
 function ServiceBuyCombo(body){
-    console.log(body)
     verify = VerifyBody({body,type:'comboExists'})
     if(!verify[1]) return [verify[0],verify[1]]
 
